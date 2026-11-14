@@ -3,22 +3,11 @@ const dev = process.env.NODE_ENV !== 'production';
 loadEnvConfig(process.cwd(), dev);
 
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const next = require('next');
 const { validateEnv } = require('../lib/env');
 const { connectDB } = require('../lib/db');
-const { notFoundApi, errorHandler, AppError } = require('../lib/http');
 const { closeExpiredVacancies } = require('../services/vacancies');
-
-function securityHeaders(req, res, nextFn) {
-  res.set({
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'Referrer-Policy': 'same-origin',
-    'Permissions-Policy': 'camera=(self), microphone=(), geolocation=()',
-  });
-  nextFn();
-}
+const { createApiApp } = require('./apiApp');
 
 async function main() {
   validateEnv();
@@ -33,15 +22,7 @@ async function main() {
   const app = express();
   app.disable('x-powered-by');
   app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS || 0));
-  app.use(securityHeaders, cookieParser());
-  app.use('/api', express.json({ limit: '3mb' }), (req, res, n) => {
-    res.set('Cache-Control', 'no-store');
-    if (req.body === undefined) req.body = {};
-    else if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method) && (!req.body || typeof req.body !== 'object' || Array.isArray(req.body))) {
-      return n(new AppError(400, 'BAD_BODY', 'Request body must be a JSON object.'));
-    }
-    n();
-  }, require('./routes'), notFoundApi, errorHandler);
+  app.use(createApiApp());
   app.all('*', (req, res) => handle(req, res));
 
   const port = process.env.PORT === undefined ? 3000 : Number(process.env.PORT);

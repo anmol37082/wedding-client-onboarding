@@ -19,7 +19,10 @@ Camera access needs HTTPS (or localhost).
 
 ### Environment
 `MONGODB_URI`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `JWT_SECRET` (32+ chars in production).
-OTP delivery is isolated in `services/email.js`: `OTP_PROVIDER=console` (dev only, prints the OTP and shows it on the verify screen; **refused in production**) or `smtp` (configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, and `SMTP_FROM`). The server refuses to start if configuration is missing.
+OTP delivery is isolated in `services/email.js`: `OTP_PROVIDER=console` (dev only, prints the OTP and shows it on the verify screen; **refused in production**), `smtp` (configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, and `SMTP_FROM`), or `resend` (configure `RESEND_API_KEY` and `SMTP_FROM`). For Vercel, use the Resend HTTP API provider rather than SMTP, which may be blocked for outbound connections. Set `SMTP_FROM` to a sender address verified with your email provider. The server refuses to start if configuration is missing.
+
+### Vercel
+Vercel serves the Next.js frontend and the API separately. `api/[...path].js` exposes the existing Express routes as a Vercel Function and initializes MongoDB on demand. Set the required app variables in Vercel Project Settings → Environment Variables, including `OTP_PROVIDER=resend`, `RESEND_API_KEY`, and `SMTP_FROM`, then redeploy. Keep the existing Express/Next custom server for local and non-Vercel deployments.
 
 ## Layout
 ```
