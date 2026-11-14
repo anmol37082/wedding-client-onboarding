@@ -31,6 +31,6 @@ async function handler(req, res) {
   }
 }
 
-handler.config = { api: { bodyParser: { sizeLimit: '3mb' } } };
+handler.config = { api: { bodyParser: false } };
 
 module.exports = handler;
