@@ -1,0 +1,26 @@
+{
+  "id": "/",
+  "name": "Jashne Riyasat",
+  "short_name": "Jashne",
+  "description": "Wedding planning and event management",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FEFAE7",
+  "theme_color": "#FEFAE7",
+  "icons": [
+    {
+      "src": "/icons/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

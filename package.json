@@ -1,0 +1,28 @@
+{
+  "name": "wedding-onboarding",
+  "version": "1.0.0",
+  "description": "Wedding client & staff onboarding app",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "node server/index.js",
+    "build": "next build",
+    "test": "node --test",
+    "start": "NODE_ENV=production node server/index.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "cloudinary": "^2.11.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.22.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.11.1",
+    "next": "^14.2.35",
+    "nodemailer": "^7.0.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=18.18"
+  }
+}
